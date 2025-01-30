@@ -1,4 +1,5 @@
 header {
+	margin: 0;
 	display: flex;
 	flex-direction: column;
 	
@@ -9,23 +10,22 @@ header {
 	margin: 50px 0;
 	background-color: #FFFEF8;
 }
-#banniere .banniere-off {
-	display: none;
-}
-.banniere-edit {
+#banniere-edit {
+	width: 100%;
+	margin: 0;
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 	background-color: black;
 	color: #FFFFFF;
 }
-.banniere-edit p {
+#banniere-edit p {
 	font-family: 'Work Sans';
 	font-size: 16px;
 	margin:0;
 	padding: 20px 10px;
 }
-.banniere-edit span {
+#banniere-edit span {
 	font-size: 16px;
 	margin: 0;
 	padding: 20px 0;

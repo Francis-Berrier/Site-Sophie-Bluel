@@ -18,74 +18,60 @@ export async function requestLog(email, password) {
     
         sessionStorage.setItem("authData", authData);
         window.location.replace("index.html")
-        //let banniereEdit = document.querySelector("#banniere-edit");
-        //banniereEdit.style.display = "flex";
-
     }else {
-        const messageErreur = document.createElement("h3");
-        messageErreur.innerText = "Erreur dans l'identifiant ou le mot de passe";
-        document.querySelector("#erreur-connexion").appendChild(messageErreur);
-    }
-    
+        let erreurContainer = document.querySelector("#erreur-connexion");
+        if(erreurContainer.innerHTML === ""){
+            const messageErreur = document.createElement("h3");
+            messageErreur.innerText = "Erreur dans l'identifiant ou le mot de passe";
+            erreurContainer.appendChild(messageErreur);
+        }
+    }  
 }
 
 export function verifAuthor(){
 
     const authData = window.sessionStorage.getItem("authData");
     const auth= JSON.parse(authData)
-    let banniereEdit = document.querySelector(".banniere-edit");
-    let boutonEdit = document.querySelector(".button");
+    let banniereEdit = document.querySelector("#banniere-edit");
+    let boutonEdit = document.querySelector("#button");
     let filtres = document.querySelector(".filtres");
-    let filtresOff = document.querySelector(".filtres-off");
     let loginLink = document.querySelector("#login-link");
     let logoutLink = document.querySelector("#logout-link");
     
     if(auth !== null) {
-        if(logoutLink.classList.contains("hidden")){
-            logoutLink.classList.remove("hidden");
-            loginLink.classList.add("hidden");
+        if(logoutLink && loginLink){
+            if(logoutLink.classList.contains("hidden")){
+                logoutLink.classList.remove("hidden");
+                loginLink.classList.add("hidden");
+            }
         }
-        if (filtres){
-            filtres.classList.replace("filtres", "filtres-off");
+        if (filtres && filtres.style.display==="flex"){
+            filtres.style.display="none";
         }
-        if(banniereEdit.innerHTML === ""){
-           let editSquare = document.createElement("span");
-           editSquare.classList.add("material-symbols-outlined");
-           editSquare.innerText = "edit_square";
-           let modifText = document.createElement("p");
-           modifText.innerText = "Mode édition";
-
-           banniereEdit.appendChild(editSquare);
-           banniereEdit.appendChild(modifText);
+        if (banniereEdit && banniereEdit.style.display==="none"){
+            banniereEdit.style.display="flex";
         }
-
-        if(boutonEdit.innerHTML === ""){
-            let editSquareB = document.createElement("span");
-            editSquareB.classList.add("material-symbols-outlined");
-            editSquareB.innerText = "edit_square";
-            let modifTextB = document.createElement("p");
-            modifTextB.innerText = "modifier";
- 
-            boutonEdit.appendChild(editSquareB);
-            boutonEdit.appendChild(modifTextB);
+      
+        if (boutonEdit && boutonEdit.style.display==="none"){
+            boutonEdit.style.display="flex";
         }
 
     }else{
-        if(loginLink.classList.contains("hidden")){
-            loginLink.classList.remove("hidden");
-            logoutLink.classList.add("hidden");
+        if(logoutLink && loginLink){
+            if(loginLink.classList.contains("hidden")){
+                loginLink.classList.remove("hidden");
+                logoutLink.classList.add("hidden");
+            }
         }
-        if (filtresOff){
-            filtresOff.classList.replace("filtres-off", "filtres");
+        if (filtres && filtres.style.display==="none"){
+            filtres.style.display="flex";
         }
-
-        if(banniereEdit.innerHTML !== ""){
-            banniereEdit.innerHTML = "";
+        if (banniereEdit && banniereEdit.style.display==="flex"){
+            banniereEdit.style.display="none";
         }
-
-        if(boutonEdit.innerHTML !== ""){
-            boutonEdit.innerHTML = "";
-        }   
+        if (boutonEdit && boutonEdit.style.display==="flex"){
+            boutonEdit.style.display="none";
+        }
     }
 }
 

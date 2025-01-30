@@ -36,7 +36,7 @@
 	text-align: center;
 }
 
-#projets .button {
+#button {
 	all: unset;
 	cursor: pointer;
 	padding-top: 10px;
@@ -44,14 +44,14 @@
 	position: absolute;
 	right: 190px;
 }
-#projets .button span{
+#button span{
 	font-size: 16px;
 }
-#projets .button p {
+#button p {
 	font-size: 14px;
 	margin-left: 8px;
 }
-#projets .button:hover {
+#button:hover {
 	color:#B1663C;
 }
 .filtres-off{

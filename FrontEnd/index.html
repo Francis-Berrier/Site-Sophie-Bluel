@@ -13,12 +13,21 @@
 	<link rel="stylesheet" href="./assets/style/header.css">
 	<link rel="stylesheet" href="./assets/style/footer.css">
 	<link rel="stylesheet" href="./assets/style/index.css">
+	<link rel="stylesheet" href="./assets/style/modale.css">
 	<script type="module" src="./js/main.js" defer></script>
 </head>
 <body>
+	<div id="modal1" style="display: none;">
+		<div class="modal-wrapper">
+			<button id="fermer-modal">Fermer</button>
+		</div>
+	</div>
 <!--<div id="header-container"></div>-->
 <header>
-	<div class="banniere-edit"></div>
+	<div id="banniere-edit" style="display: none;">
+		<span class="material-symbols-outlined">edit_square</span>
+		<p>Mode édition</p>
+	</div>
 	<div id="header-content">
 		<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 		<nav>
@@ -32,6 +41,7 @@
 		</nav>
 	</div>
 </header>
+
 <main>
 	<section id="introduction">
 		<figure>
@@ -47,12 +57,12 @@
 	<section id="portfolio">
 		<div id="projets">
 			<h2>Mes Projets</h2>
-			<div class="button">
+			<a href="#modal1" id="button" style="display: none;" >
 				<span class="material-symbols-outlined">edit_square</span>
 				<p>modifier</p>
-			</div>
+			</a>
 		</div>
-		<div class="filtres"></div>
+		<div class="filtres" style="display: flex;"></div>
 		<div class="gallery">
 		</div>
 	</section>
