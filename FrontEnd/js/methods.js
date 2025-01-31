@@ -1,10 +1,11 @@
-export async function getProjets() {
+async function getProjets() {
 
     const reponse = await fetch('http://localhost:5678/api/works');
     const works = await reponse.json();
     const worksJSON = JSON.stringify(works);
 
-    window.localStorage.setItem("works", worksJSON); 
+    window.localStorage.setItem("works", worksJSON);
+    return works;
 }
 export async function getCategories() {
 
@@ -35,9 +36,11 @@ export function genererProjets(works) {
         projetsElements.appendChild(projetElement);
         projetElement.appendChild(projetImg);
         projetElement.appendChild(projetTitle);
-        
-
     }
+}
+export async function chargeProjets() {
+    const works = await getProjets();
+    genererProjets(works);
 }
 
 async function creerFiltres(){
