@@ -7,21 +7,40 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=edit_square" rel="stylesheet">
 	<meta name="description" content="">
-	<link rel="stylesheet" href="./assets/style.css">
+	<link rel="stylesheet" href="./assets/style/style.css">
+	<link rel="stylesheet" href="./assets/style/header.css">
+	<link rel="stylesheet" href="./assets/style/footer.css">
+	<link rel="stylesheet" href="./assets/style/index.css">
+	<link rel="stylesheet" href="./assets/style/modale.css">
+	<script type="module" src="./js/main.js" defer></script>
 </head>
 <body>
-<header>
-	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
-	<nav>
-		<ul>
-			<li>projets</li>
-			<li>contact</li>
-			<li>login</li>
-			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
-		</ul>
-	</nav>
-</header>
+	<div id="modal1" style="display: none;">
+		<div class="modal-wrapper">
+			<button id="fermer-modal">Fermer</button>
+		</div>
+	</div>
+<div id="header-container"></div>
+<!--<header>
+	<div id="banniere-edit" style="display: none;">
+		<span class="material-symbols-outlined">edit_square</span>
+		<p>Mode édition</p>
+	</div>
+	<div id="header-content">
+		<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
+		<nav>
+			<ul>
+				<li><a href="index.html#portfolio">projets</a></li>
+				<li><a href="index.html#contact">contact</a></li>
+				<li id="login-link" class="hidden"><a href="connexion.html">login</a></li>
+				<li id="logout-link" ><a>logout</a></li>
+				<li><img src="assets\icons\instagram.png" alt="Instagram"></li>
+			</ul>
+		</nav>
+	</div>
+</header>-->
 <main>
 	<section id="introduction">
 		<figure>
@@ -35,52 +54,15 @@
 		</article>
 	</section>
 	<section id="portfolio">
-		<h2>Mes Projets</h2>
+		<div id="projets">
+			<h2>Mes Projets</h2>
+			<a id="button" style="display: none;" >
+				<span class="material-symbols-outlined">edit_square</span>
+				<p>modifier</p>
+			</a>
+		</div>
+		<div class="filtres" style="display: flex;"></div>
 		<div class="gallery">
-			<figure>
-				<img src="assets/images/abajour-tahina.png" alt="Abajour Tahina">
-				<figcaption>Abajour Tahina</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/appartement-paris-v.png" alt="Appartement Paris V">
-				<figcaption>Appartement Paris V</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/restaurant-sushisen-londres.png" alt="Restaurant Sushisen - Londres">
-				<figcaption>Restaurant Sushisen - Londres</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/la-balisiere.png" alt="Villa “La Balisiere” - Port Louis">
-				<figcaption>Villa “La Balisiere” - Port Louis</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/structures-thermopolis.png" alt="Structures Thermopolis">
-				<figcaption>Structures Thermopolis</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/appartement-paris-x.png" alt="Appartement Paris X">
-				<figcaption>Appartement Paris X</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/le-coteau-cassis.png" alt="Pavillon “Le coteau” - Cassis">
-				<figcaption>Pavillon “Le coteau” - Cassis</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/villa-ferneze.png" alt="Villa Ferneze - Isola d’Elba">
-				<figcaption>Villa Ferneze - Isola d’Elba</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/appartement-paris-xviii.png" alt="Appartement Paris XVIII">
-				<figcaption>Appartement Paris XVIII</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/bar-lullaby-paris.png" alt="Bar “Lullaby” - Paris">
-				<figcaption>Bar “Lullaby” - Paris</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/hotel-first-arte-new-delhi.png" alt="Hotel First Arte - New Delhi">
-				<figcaption>Hotel First Arte - New Delhi</figcaption>
-			</figure>
 		</div>
 	</section>
 	<section id="contact">
@@ -97,13 +79,6 @@
 		</form>
 	</section>
 </main>
-
-<footer>
-	<nav>
-		<ul>
-			<li>Mentions Légales</li>
-		</ul>
-	</nav>
-</footer>
+<div id="footer-container"></div>
 </body>
 </html>
