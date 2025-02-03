@@ -90,6 +90,11 @@ input[type="submit"]{
 	border-radius: 60px ;
 }
 
+.erreur-message {
+	color: #ca1f1f;
+	font-weight: 600;
+}
+
 
 
 

@@ -19,28 +19,46 @@
 <body>
 	<div id="modal1" style="display: none;">
 		<div class="modal-wrapper">
-			<button id="fermer-modal">Fermer</button>
+			<div id="modal-gallery" style="display: flex;">
+				<button class="fermer-modal"><img src="assets/icons/cross-close.png" alt="Fermer"></button>
+				<h2>Galerie photo</h2>
+				<div id="erreur-suppression" class="erreur-message"></div>
+				<div class="photo-gallery"></div>
+				<div class="ajout-container">
+					<button id="btn-ajout" class="btn-modal">Ajouter une photo</button>
+				</div>
+			</div>
+			<div id="modal-add" style="display: none;">
+				<div class="button-wrapper">
+					<button id="retour-gallery"><img src="assets/icons/fleche-retour.png" alt="Retour Galerie"></button>
+					<button class="fermer-modal"><img src="assets/icons/cross-close.png" alt="Fermer"></button>
+				</div>
+				<h2>Ajout photo</h2>
+				<form>
+					<div class ="img-dropzone">
+						<div class="dropzone-content" style="display:flex">
+							<img src="assets/icons/stylised-picture.png">
+							<button id="file-select" class="btn-modal">+ Ajouter photo</button>
+							<input type="file" id="img-upload" style="display: none">>
+							<p class="message-img-type" style="display:block">jpg, png : 4mo max</p>
+							<p class="erreur-img-type" style="display:none">jpg, png : 4mo max</p>
+						</div>
+						<img id="preview" src="" alt="apreçu de la photo" style="display: none;">
+					</div>
+					<label for="titre">Titre</label>
+					<input type="text" name="titre" id="titre">
+					<label for="categorie">Catégorie</label>
+					<select id="categorie" name="categorie" class="cat-opt">
+						<option value="0"></option>
+					</select>
+				</form>
+				<div class="ajout-container">
+					<button id="btn-valider" class="btn-modal incomplet">Valider</button>
+				</div>
+			</div>
 		</div>
 	</div>
 <div id="header-container"></div>
-<!--<header>
-	<div id="banniere-edit" style="display: none;">
-		<span class="material-symbols-outlined">edit_square</span>
-		<p>Mode édition</p>
-	</div>
-	<div id="header-content">
-		<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
-		<nav>
-			<ul>
-				<li><a href="index.html#portfolio">projets</a></li>
-				<li><a href="index.html#contact">contact</a></li>
-				<li id="login-link" class="hidden"><a href="connexion.html">login</a></li>
-				<li id="logout-link" ><a>logout</a></li>
-				<li><img src="assets\icons\instagram.png" alt="Instagram"></li>
-			</ul>
-		</nav>
-	</div>
-</header>-->
 <main>
 	<section id="introduction">
 		<figure>

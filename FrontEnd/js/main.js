@@ -1,7 +1,7 @@
 import { chargeProjets, filtres } from "./methods.js";
 import { checkEditMode} from "./requestLog.js";
 import { loadTemplate, loadHeader } from "./templates-loading.js";
-import { openCloseModal } from "./modal.js";
+import { affichageModal} from "./modal.js";
 
 
 /*Chargement du header et du footer*/
@@ -14,4 +14,4 @@ chargeProjets();
 filtres();
 
 /*Gestion de la modale*/
-openCloseModal()
+affichageModal();
