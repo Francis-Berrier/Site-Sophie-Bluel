@@ -71,7 +71,7 @@ async function creerFiltres(){
     const categories = await getCategories();
 
     const boutonTous = document.createElement("button");
-    boutonTous.id = "tous";
+    boutonTous.dataset.id = "tous";
     boutonTous.innerText= "Tous";
     document.querySelector(".filtres").appendChild(boutonTous);
 
@@ -80,7 +80,7 @@ async function creerFiltres(){
         const filtre = categories[i];
 
         const boutonFiltrer = document.createElement("button");
-        boutonFiltrer.id = filtre.id;
+        boutonFiltrer.dataset.id = filtre.id;
         boutonFiltrer.innerText= filtre.name;
 
         document.querySelector(".filtres").appendChild(boutonFiltrer);
@@ -88,8 +88,33 @@ async function creerFiltres(){
 
     
 }
-
 async function actionFiltres() {
+
+    const boutonsFiltres = document.querySelector(".filtres");
+    
+    boutonsFiltres.addEventListener("click", async (event) =>{
+
+        let id = event.target.dataset.id;
+
+        const works = await getProjets();
+
+        document.querySelectorAll(".filtres button").forEach(button => button.classList.remove("clicked"));
+        event.target.classList.add("clicked");
+
+        if(id === "tous"){
+            document.querySelector(".gallery").innerHTML = "";
+            genererProjets(works);
+
+        }else{
+            id = parseInt(id);
+            const worksFiltres = works.filter(p => p.categoryId === id);
+            document.querySelector(".gallery").innerHTML = "";
+            genererProjets(worksFiltres); 
+        }
+    })
+    
+}
+/*async function actionFiltres() {
 
     const boutonsFiltres = document.querySelectorAll(".filtres button");
     
@@ -97,7 +122,7 @@ async function actionFiltres() {
 
         button.addEventListener("click", async (event) =>{
 
-            let id = event.target.id;
+            let id = event.target.dataset.id;
 
             const works = await getProjets();
 
@@ -116,7 +141,7 @@ async function actionFiltres() {
             }
         })
     })
-}
+}*/
 export async function filtres(){
     creerFiltres();
     actionFiltres();

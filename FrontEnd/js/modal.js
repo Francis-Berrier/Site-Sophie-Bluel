@@ -8,7 +8,6 @@ export function affichageModal(){
     supprimerProjets();
     addProjets();
 }
-
 function changePageModal(){
 
     document.querySelector("#btn-ajout").addEventListener("click", function() {
@@ -16,17 +15,12 @@ function changePageModal(){
         document.querySelector("#modal-add").style.display = "flex";
         document.querySelector("#preview").style.display = "none";
         document.querySelector(".dropzone-content").style.display = "flex";
-        let image= document.getElementById("image-form");
-        let newImage = image.cloneNode(true);
-        image.parentNode.replaceChild(newImage, image);
-        document.getElementById("ajout-nouveau-projet").reset();
-        document.querySelector("#btn-valider").disabled= true;
-
-
+        clearformAdd();
     });
     document.querySelector("#retour-gallery").addEventListener("click", function() {
         document.querySelector("#modal-gallery").style.display = "flex";
         document.querySelector("#modal-add").style.display = "none";
+        afficheProjetsModal();
     });
 }
 function openCloseModal(){
@@ -45,6 +39,8 @@ function openCloseModal(){
             displayModal.style.display = "none";
             document.querySelector("#modal-gallery").style.display = "flex";
             document.querySelector("#modal-add").style.display = "none";
+            clearformAdd();
+            chargeProjets();
         })
     });
 
@@ -54,6 +50,8 @@ function openCloseModal(){
         overlay.style.display = "none";
         document.querySelector("#modal-gallery").style.display = "flex";
         document.querySelector("#modal-add").style.display = "none";
+        clearformAdd();
+        chargeProjets();
         }
     });
 }
@@ -65,7 +63,7 @@ function genererProjetsModal(works) {
         const projet = works[i];
 
         const projetElement = document.createElement("figure");
-        projetElement.id = projet.id;
+        //projetElement.id = projet.id;
         const projetImg = document.createElement("img");
         projetImg.src = projet.imageUrl;
         projetImg.alt = projet.title;
@@ -141,58 +139,50 @@ async function supprimerProjets() {
             }
         })
 }
-function uploadImg() {
+function addProjets() {
     const imgDropzone = document.querySelector(".img-dropzone");
     const btnFileSelect= document.getElementById("file-select");
     const imgUpload = document.getElementById("image-form");
     const titreForm= document.getElementById("title-form");
     const categorieForm = document.getElementById("category-form");
-    let file= null;
-    let verifFile= false;
-
-    function verifForm() {
-        const btnValider= document.querySelector("#btn-valider");
-    
-        const verifTitre = titreForm.value.trim() !== "";
-        const verifCategorie = categorieForm.value > 0;
-
-        if(verifFile && verifTitre && verifCategorie) {
-            btnValider.disabled= false;
-        
-        }else{
-            btnValider.disabled= true;
-        }
-    }
+    const btnValider= document.querySelector("#btn-valider");
+    let verifFile = false;
+    verifForm();
 
     imgDropzone.addEventListener("dragover", (event) =>{
         event.preventDefault();
         imgDropzone.classList.add("dragover");
     })
-
     imgDropzone.addEventListener("dragleave", (event) =>{
         event.preventDefault();
         imgDropzone.classList.remove("dragover");
     })
 
-    imgDropzone.addEventListener("drop", (event) =>{
+    imgDropzone.addEventListener("drop", async (event) =>{
         event.preventDefault();
         imgDropzone.classList.remove("dragover");
-        file = event.dataTransfer.files[0]; // file est définie auparavant
+
+        const file = event.dataTransfer.files[0];
         const maxSize= 4 * 1024 *  1024;
         const validTypes= ["image/jpeg", "image/png"];
-        if(file && validTypes.includes(file.type) && file.size <= maxSize) {
-            let dataTransfer= new DataTransfer();
-            dataTransfer.items.add(event.dataTransfer.files[0]);
-            imgUpload.files=dataTransfer.files; // ajoute l'image à l'input type file
-            verifFile = true;
-            afficherApercu(file); // affiche un aperçu de l'image dans la dropzone
-            verifForm(); // verifie que les champs du formulaire sont replis ou non
 
+        if(file && validTypes.includes(file.type) && file.size <= maxSize) {
+
+            verifFile = true;
+            afficherApercu(file);
+            verifForm();
+            titreForm.addEventListener("input", () =>{verifForm()});
+            categorieForm.addEventListener("change", () =>{verifForm()});
+
+            btnValider.addEventListener("click", async function(){
+                uploadProjets(file);
+            })
+            
         }else{
             document.querySelector(".message-img-type").style.display="none";
-            document.querySelector(".erreur-img-type").style.display="block"; 
+            document.querySelector(".erreur-img-type").style.display="block";
+            clearformAdd();
         } 
-    
     })
 
     btnFileSelect.addEventListener("click", (event) => {
@@ -200,29 +190,38 @@ function uploadImg() {
         event.preventDefault();
         imgUpload.click()
     });
-    //imgUpload.addEventListener("click", (event) => {
-        //event.stopPropagation();
-    //});
-    imgUpload.addEventListener("change", (event)=> {
+    imgUpload.addEventListener("change", async (event)=> {
         const file = event.target.files[0];
         const maxSize= 4 * 1024 *  1024;
         const validTypes= ["image/jpeg", "image/png"];
-        if(file && validTypes.includes(file.type) && file.size <= maxSize) {
-            verifFile = true;
-            afficherApercu(file);
-            verifForm();
 
-        }else{
+        if(!file || !validTypes.includes(file.type) || file.size > maxSize) {
             document.querySelector(".message-img-type").style.display="none";
             document.querySelector(".erreur-img-type").style.display="block";
-            imgUpload.value="";
+            clearformAdd();
+            
         }   
-    });
-    titreForm.addEventListener("input", () =>{verifForm()});
-    categorieForm.addEventListener("change", () =>{verifForm()});
+        verifFile = true;
+        afficherApercu(file);
+        verifForm();
+        console.log(event.target.files);
+        titreForm.addEventListener("input", () =>{verifForm()});
+        categorieForm.addEventListener("change", () =>{verifForm()});
 
+        btnValider.addEventListener("click", async function(){
+          uploadProjets(file);
+        });
+    })
+
+    function verifForm() {
+        const btnValider= document.querySelector("#btn-valider");
+    
+        const verifTitre = titreForm.value.trim() !== "";
+        const verifCategorie = categorieForm.value > 0;
+
+        btnValider.disabled = !(verifFile && verifTitre && verifCategorie);
+    }
 }
-
 function afficherApercu(file) {
     const preview = document.querySelector("#preview");
     const dropzoneContent = document.querySelector(".dropzone-content");
@@ -234,45 +233,40 @@ function afficherApercu(file) {
         preview.style.display = "block";
         dropzoneContent.style.display = "none";
     }
+    
 }
-async function addProjets() {
-    const file= uploadImg();
-    const btnValider= document.querySelector("#btn-valider");
-
-    btnValider.addEventListener("click", async function(){ 
-        const authData = JSON.parse(window.sessionStorage.getItem("authData"));
-        const token= authData.token;
-        const reponse= await requeteAdd(token);
-        document.querySelector("#preview").style.display = "none";
-        document.querySelector(".dropzone-content").style.display = "flex";
-        let image= document.getElementById("image");
-        let newImage = image.cloneNode(true);
-        image.parentNode.replaceChild(newImage, image);
-        document.getElementById("ajout-nouveau-projet").reset();
-        console.log(reponse.status);
-
-        if (reponse === 201){
-            miseAJourProjets();
-            chargeProjets();
-            afficheProjetsModal();
-        }else {
-            let erreurContainer = document.querySelector("#erreur-ajout");
-            if(erreurContainer.innerHTML === ""){
-                const messageErreur = document.createElement("p");
-                messageErreur.innerText = "Erreur: le fichier ne peut pas être créé";
-                erreurContainer.appendChild(messageErreur);
-                console.log("Erreur:", reponse);
-            }
-        }   
-    })
+async function uploadProjets(file) {
+    const authData = JSON.parse(window.sessionStorage.getItem("authData"));
+    const token= authData.token;
+    const reponse= await requeteAdd(token, file);
+    console.log(reponse);
+    
+    if (reponse === 201){
+        miseAJourProjets();
+        chargeProjets();
+        afficheProjetsModal();
+        clearformAdd();
+    }else {
+        let erreurContainer = document.querySelector("#erreur-ajout");
+        if(erreurContainer.innerHTML === ""){
+            const messageErreur = document.createElement("p");
+            messageErreur.innerText = "Erreur: le fichier ne peut pas être créé";
+            erreurContainer.appendChild(messageErreur);
+            console.log("Erreur:", reponse);
+            clearformAdd();
+        }
+    }     
 }
-async function requeteAdd(auth) {
+async function requeteAdd(auth, file) {
+    console.log(document.getElementById("image-form").files)
     const token = auth;
     let category= document.getElementById("category-form").value;
     let title= document.getElementById("title-form").value;
-    let image= document.getElementById("image-form").files[0];
+    const image = file;
+    //let image= document.getElementById("image-form").files[0];
     console.log(category);
     console.log(title);
+    console.log(image);
     const formData= new FormData();
     formData.append("image", image);
     formData.append("title", title);
@@ -284,4 +278,12 @@ async function requeteAdd(auth) {
     });
     return reponse.status;
 }
-
+function clearformAdd() {
+    document.querySelector("#preview").style.display = "none";
+    document.querySelector(".dropzone-content").style.display = "flex";
+    let image= document.getElementById("image-form");
+    let newImage = image.cloneNode(true);
+    image.parentNode.replaceChild(newImage, image);
+    document.getElementById("ajout-nouveau-projet").reset();
+    document.querySelector("#btn-valider").disabled= true;
+}
