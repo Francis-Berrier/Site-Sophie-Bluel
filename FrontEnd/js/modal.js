@@ -6,7 +6,7 @@ export function affichageModal(){
     afficheProjetsModal();
     afficheCategoriesModal();
     supprimerProjets();
-    uploadImg();
+    addProjets();
 }
 
 function changePageModal(){
@@ -16,6 +16,11 @@ function changePageModal(){
         document.querySelector("#modal-add").style.display = "flex";
         document.querySelector("#preview").style.display = "none";
         document.querySelector(".dropzone-content").style.display = "flex";
+        let image= document.getElementById("image-form");
+        let newImage = image.cloneNode(true);
+        image.parentNode.replaceChild(newImage, image);
+        document.getElementById("ajout-nouveau-projet").reset();
+        document.querySelector("#btn-valider").disabled= true;
 
 
     });
@@ -88,13 +93,13 @@ function genererCategoriesModal(categories){
 
     for(let i=0; i< categories.length; i++){
 
-        const categorie = categories[i];
+        const category = categories[i];
 
         const optionCategorie = document.createElement("option");
-        optionCategorie.value = categorie.id;
-        optionCategorie.innerText= categorie.name;
+        optionCategorie.value = category.id;
+        optionCategorie.innerText= category.name;
 
-        document.querySelector("#categorie").appendChild(optionCategorie);
+        document.querySelector("#category-form").appendChild(optionCategorie);
     }
 
 }
@@ -139,8 +144,25 @@ async function supprimerProjets() {
 function uploadImg() {
     const imgDropzone = document.querySelector(".img-dropzone");
     const btnFileSelect= document.getElementById("file-select");
-    const imgUpload = document.getElementById("img-upload");
-    let file=null;
+    const imgUpload = document.getElementById("image-form");
+    const titreForm= document.getElementById("title-form");
+    const categorieForm = document.getElementById("category-form");
+    let file= null;
+    let verifFile= false;
+
+    function verifForm() {
+        const btnValider= document.querySelector("#btn-valider");
+    
+        const verifTitre = titreForm.value.trim() !== "";
+        const verifCategorie = categorieForm.value > 0;
+
+        if(verifFile && verifTitre && verifCategorie) {
+            btnValider.disabled= false;
+        
+        }else{
+            btnValider.disabled= true;
+        }
+    }
 
     imgDropzone.addEventListener("dragover", (event) =>{
         event.preventDefault();
@@ -155,15 +177,22 @@ function uploadImg() {
     imgDropzone.addEventListener("drop", (event) =>{
         event.preventDefault();
         imgDropzone.classList.remove("dragover");
-        file = event.dataTransfer.files[0];
+        file = event.dataTransfer.files[0]; // file est définie auparavant
         const maxSize= 4 * 1024 *  1024;
-        if(file && (file.type.startsWith("image/png")||(file.type.startsWith("image/jpeg"))) && file.size < maxSize) {
-            afficherApercu(file);
+        const validTypes= ["image/jpeg", "image/png"];
+        if(file && validTypes.includes(file.type) && file.size <= maxSize) {
+            let dataTransfer= new DataTransfer();
+            dataTransfer.items.add(event.dataTransfer.files[0]);
+            imgUpload.files=dataTransfer.files; // ajoute l'image à l'input type file
+            verifFile = true;
+            afficherApercu(file); // affiche un aperçu de l'image dans la dropzone
+            verifForm(); // verifie que les champs du formulaire sont replis ou non
 
         }else{
             document.querySelector(".message-img-type").style.display="none";
-            document.querySelector(".erreur-img-type").style.display="block";
-        }   
+            document.querySelector(".erreur-img-type").style.display="block"; 
+        } 
+    
     })
 
     btnFileSelect.addEventListener("click", (event) => {
@@ -171,55 +200,27 @@ function uploadImg() {
         event.preventDefault();
         imgUpload.click()
     });
-    imgUpload.addEventListener("click", (event) => {
-        event.stopPropagation();
-    });
+    //imgUpload.addEventListener("click", (event) => {
+        //event.stopPropagation();
+    //});
     imgUpload.addEventListener("change", (event)=> {
-        file = event.target.files[0];
+        const file = event.target.files[0];
         const maxSize= 4 * 1024 *  1024;
-        if(file && (file.type.startsWith("image/png")||(file.type.startsWith("image/jpeg"))) && file.size < maxSize) {
+        const validTypes= ["image/jpeg", "image/png"];
+        if(file && validTypes.includes(file.type) && file.size <= maxSize) {
+            verifFile = true;
             afficherApercu(file);
+            verifForm();
 
         }else{
             document.querySelector(".message-img-type").style.display="none";
             document.querySelector(".erreur-img-type").style.display="block";
-            file = null;  
+            imgUpload.value="";
         }   
-    })
-    verifAddProjets(file);
-    return file;
-}
+    });
+    titreForm.addEventListener("input", () =>{verifForm()});
+    categorieForm.addEventListener("change", () =>{verifForm()});
 
-async function addProjets(file) {
-    verifAddProjets(file);
-    let categorieId = 0;
-    let titre = "";
-    const btnValider= querySelector(".add-projet");
-
-    btnValider.addEventListener("click", function(){
-        const categorie= document.querySelector("#categorie");
-        categorieId= categorie.value;
-
-        const titreBalise= document.querySelector("#titre");
-        titre= titreBalise.innerText;
-    })
-    const reponse = fetch("");
-
-}
-function verifAddProjets(file) {
-    let fileOk = false;
-    const maxSize= 4 * 1024 *  1024;
-    if((file.type.startsWith("image/png")||(file.type.startsWith("image/jpeg"))) && file.size<maxSize ) {
-        fileOk = true;
-    }
-    const categorie= document.querySelector("#categorie");
-    const categorieId= categorie.value;
-
-    const titre= document.querySelector("#titre");
-
-    if(fileOk && titre.innerText!="" && categorieId!=0){
-        document.querySelector("#btn-valider").classList.replace("incomplet", "add-projet");
-    }
 }
 
 function afficherApercu(file) {
@@ -234,3 +235,53 @@ function afficherApercu(file) {
         dropzoneContent.style.display = "none";
     }
 }
+async function addProjets() {
+    const file= uploadImg();
+    const btnValider= document.querySelector("#btn-valider");
+
+    btnValider.addEventListener("click", async function(){ 
+        const authData = JSON.parse(window.sessionStorage.getItem("authData"));
+        const token= authData.token;
+        const reponse= await requeteAdd(token);
+        document.querySelector("#preview").style.display = "none";
+        document.querySelector(".dropzone-content").style.display = "flex";
+        let image= document.getElementById("image");
+        let newImage = image.cloneNode(true);
+        image.parentNode.replaceChild(newImage, image);
+        document.getElementById("ajout-nouveau-projet").reset();
+        console.log(reponse.status);
+
+        if (reponse === 201){
+            miseAJourProjets();
+            chargeProjets();
+            afficheProjetsModal();
+        }else {
+            let erreurContainer = document.querySelector("#erreur-ajout");
+            if(erreurContainer.innerHTML === ""){
+                const messageErreur = document.createElement("p");
+                messageErreur.innerText = "Erreur: le fichier ne peut pas être créé";
+                erreurContainer.appendChild(messageErreur);
+                console.log("Erreur:", reponse);
+            }
+        }   
+    })
+}
+async function requeteAdd(auth) {
+    const token = auth;
+    let category= document.getElementById("category-form").value;
+    let title= document.getElementById("title-form").value;
+    let image= document.getElementById("image-form").files[0];
+    console.log(category);
+    console.log(title);
+    const formData= new FormData();
+    formData.append("image", image);
+    formData.append("title", title);
+    formData.append("category", category);
+    const reponse = await fetch("http://localhost:5678/api/works", {
+        method: "POST",
+        headers: {"Authorization": `Bearer ${token}`},
+        body: formData
+    });
+    return reponse.status;
+}
+

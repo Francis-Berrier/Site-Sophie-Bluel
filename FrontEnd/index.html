@@ -34,26 +34,27 @@
 					<button class="fermer-modal"><img src="assets/icons/cross-close.png" alt="Fermer"></button>
 				</div>
 				<h2>Ajout photo</h2>
-				<form>
+				<div id="erreur-ajout"></div>
+				<form id="ajout-nouveau-projet">
 					<div class ="img-dropzone">
 						<div class="dropzone-content" style="display:flex">
 							<img src="assets/icons/stylised-picture.png">
 							<button id="file-select" class="btn-modal">+ Ajouter photo</button>
-							<input type="file" id="img-upload" style="display: none">>
+							<input type="file" id="image-form" style="display: none">
 							<p class="message-img-type" style="display:block">jpg, png : 4mo max</p>
 							<p class="erreur-img-type" style="display:none">jpg, png : 4mo max</p>
 						</div>
 						<img id="preview" src="" alt="apreçu de la photo" style="display: none;">
 					</div>
-					<label for="titre">Titre</label>
-					<input type="text" name="titre" id="titre">
-					<label for="categorie">Catégorie</label>
-					<select id="categorie" name="categorie" class="cat-opt">
+					<label for="title-form">Titre</label>
+					<input type="text" name="title-form" id="title-form">
+					<label for="category-form">Catégorie</label>
+					<select id="category-form" name="category-form" class="cat-opt">
 						<option value="0"></option>
 					</select>
 				</form>
 				<div class="ajout-container">
-					<button id="btn-valider" class="btn-modal incomplet">Valider</button>
+					<button id="btn-valider" class="btn-modal" disabled>Valider</button>
 				</div>
 			</div>
 		</div>
