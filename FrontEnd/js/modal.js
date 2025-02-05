@@ -1,6 +1,6 @@
 import { getProjets, getCategories, miseAJourProjets, chargeProjets } from "./methods.js";
 
-export function affichageModal(){
+export function gestionModale(){
     openCloseModal();
     changePageModal();
     afficheProjetsModal();
@@ -63,7 +63,6 @@ function genererProjetsModal(works) {
         const projet = works[i];
 
         const projetElement = document.createElement("figure");
-        //projetElement.id = projet.id;
         const projetImg = document.createElement("img");
         projetImg.src = projet.imageUrl;
         projetImg.alt = projet.title;

@@ -36,7 +36,6 @@ export async function getCategories() {
     }
     return categories
 }
-
 export function genererProjets(works) {
     const projetsElements = document.querySelector('.gallery');
     projetsElements.innerHTML ="";
@@ -59,13 +58,11 @@ export function genererProjets(works) {
         projetElement.appendChild(projetTitle);
     }
 }
-
 export async function chargeProjets() {
 
     const works = await getProjets();
     genererProjets(works);
 }
-
 async function creerFiltres(){
 
     const categories = await getCategories();
@@ -114,34 +111,6 @@ async function actionFiltres() {
     })
     
 }
-/*async function actionFiltres() {
-
-    const boutonsFiltres = document.querySelectorAll(".filtres button");
-    
-    boutonsFiltres.forEach((button) => {
-
-        button.addEventListener("click", async (event) =>{
-
-            let id = event.target.dataset.id;
-
-            const works = await getProjets();
-
-            boutonsFiltres.forEach(button => button.classList.remove("clicked"));
-            event.target.classList.toggle("clicked");
-
-            if(id === "tous"){
-                document.querySelector(".gallery").innerHTML = "";
-                genererProjets(works);
-
-            }else{
-                id = parseInt(id);
-                const worksFiltres = works.filter(p => p.categoryId === id);
-                document.querySelector(".gallery").innerHTML = "";
-                genererProjets(worksFiltres); 
-            }
-        })
-    })
-}*/
 export async function filtres(){
     creerFiltres();
     actionFiltres();
