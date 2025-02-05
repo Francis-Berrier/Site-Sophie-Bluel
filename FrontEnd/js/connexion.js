@@ -1,19 +1,12 @@
-import { loadHeader, loadTemplate } from "./templates-loading.js";
-import { verificationEmail, htmlSpecialChars} from "./verificateurs.js";
-import {  requestLogin } from "./requestLog.js";
+import { formLogin } from "./loginFunctions.js";
 
+export async function loadConnexion() {
+    document.getElementById("page-connexion-container").innerHTML = "";
+    document.getElementById("page-accueil-container").style.display= "none";
 
-loadHeader("../templates/header.html", "header-container");
-loadTemplate('../templates/footer.html', 'footer-container');
-
-const form = document.getElementById("form-connexion");
-
-form.addEventListener("submit", function(event) {
-    event.preventDefault();
-    const email = verificationEmail(event.target.email.value);
-    const password = htmlSpecialChars(event.target.password.value);
-    event.target.email.value = null;
-    event.target.password.value = null;
-    console.log(email, password);
-    requestLogin(email, password);
-})
+    const reponse = await fetch("templates/connexion.html");
+    const template = await reponse.text();
+    
+    document.getElementById("page-connexion-container").innerHTML = template;  
+    formLogin()
+}

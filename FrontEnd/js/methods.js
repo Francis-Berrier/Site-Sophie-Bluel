@@ -112,38 +112,8 @@ async function actionFiltres() {
             genererProjets(worksFiltres); 
         }
     })
-    
 }
-/*async function actionFiltres() {
-
-    const boutonsFiltres = document.querySelectorAll(".filtres button");
-    
-    boutonsFiltres.forEach((button) => {
-
-        button.addEventListener("click", async (event) =>{
-
-            let id = event.target.dataset.id;
-
-            const works = await getProjets();
-
-            boutonsFiltres.forEach(button => button.classList.remove("clicked"));
-            event.target.classList.toggle("clicked");
-
-            if(id === "tous"){
-                document.querySelector(".gallery").innerHTML = "";
-                genererProjets(works);
-
-            }else{
-                id = parseInt(id);
-                const worksFiltres = works.filter(p => p.categoryId === id);
-                document.querySelector(".gallery").innerHTML = "";
-                genererProjets(worksFiltres); 
-            }
-        })
-    })
-}*/
 export async function filtres(){
     creerFiltres();
     actionFiltres();
 }
-

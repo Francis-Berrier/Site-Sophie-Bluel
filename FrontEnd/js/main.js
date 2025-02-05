@@ -1,17 +1,10 @@
-import { chargeProjets, filtres } from "./methods.js";
-import { checkEditMode} from "./requestLog.js";
-import { loadTemplate, loadHeader } from "./templates-loading.js";
-import { affichageModal} from "./modal.js";
 
+import { loadPageAccueil } from "./pageAccueil.js";
+import { loadHeader } from "./header.js";
+import { loadFooter } from "./footer.js";
 
 /*Chargement du header et du footer*/
-loadHeader("templates/header.html", "header-container");
-loadTemplate('templates/footer.html', 'footer-container');
-checkEditMode();
+loadHeader();
+loadPageAccueil();
+loadFooter();
 
-/*Création des cartes de projets avec filtrage*/
-chargeProjets();
-filtres();
-
-/*Gestion de la modale*/
-affichageModal();

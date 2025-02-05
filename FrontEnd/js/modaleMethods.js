@@ -1,6 +1,6 @@
 import { getProjets, getCategories, miseAJourProjets, chargeProjets } from "./methods.js";
 
-export function affichageModal(){
+export function gestionModal(){
     openCloseModal();
     changePageModal();
     afficheProjetsModal();
@@ -23,7 +23,7 @@ function changePageModal(){
         afficheProjetsModal();
     });
 }
-function openCloseModal(){
+export function openCloseModal(){
 
     const btnModifier = document.querySelector("#button");
     btnModifier.addEventListener("click", function(){
