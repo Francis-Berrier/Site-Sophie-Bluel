@@ -1,4 +1,4 @@
-async function getProjets() {
+export async function miseAJourProjets() {
 
     const reponse = await fetch('http://localhost:5678/api/works');
     const works = await reponse.json();
@@ -7,16 +7,39 @@ async function getProjets() {
     window.localStorage.setItem("works", worksJSON);
     return works;
 }
-export async function getCategories() {
+export async function getProjets() {
+    const worksJSON = window.localStorage.getItem("works");
+    let works
+
+    if (worksJSON !== null){
+        works= JSON.parse(worksJSON);
+    }else{
+        works = await miseAJourProjets();
+    }
+    return works
+}
+async function miseAJourCategories() {
 
     const categoriesJSON = await fetch('http://localhost:5678/api/categories');
     const categories = await categoriesJSON.json();
 
     window.localStorage.setItem("categories", categoriesJSON);
     return categories;
-}   
+}
+export async function getCategories() {
+    const categoriesJSON = window.localStorage.getItem("categories");
+    let categories
+    if (categoriesJSON !== null){
+        categories= JSON.parse(categoriesJSON);
+    }else{
+        categories = await miseAJourCategories();
+    }
+    return categories
+}
 
 export function genererProjets(works) {
+    const projetsElements = document.querySelector('.gallery');
+    projetsElements.innerHTML ="";
 
     for(let i=0; i < works.length; i++) {
 
@@ -31,33 +54,24 @@ export function genererProjets(works) {
         const projetTitle = document.createElement("figcaption");
         projetTitle.innerText = projet.title;
 
-        const projetsElements = document.querySelector('.gallery');
-
         projetsElements.appendChild(projetElement);
         projetElement.appendChild(projetImg);
         projetElement.appendChild(projetTitle);
     }
 }
+
 export async function chargeProjets() {
+
     const works = await getProjets();
     genererProjets(works);
 }
 
 async function creerFiltres(){
 
-    let categoriesJSON = window.localStorage.getItem("categories");
-    let categories
-
-    if(categoriesJSON === null){
-
-        categories = await getCategories();
-
-    }else {
-        categories = JSON.parse(categoriesJSON);
-    }
+    const categories = await getCategories();
 
     const boutonTous = document.createElement("button");
-    boutonTous.id = "tous";
+    boutonTous.dataset.id = "tous";
     boutonTous.innerText= "Tous";
     document.querySelector(".filtres").appendChild(boutonTous);
 
@@ -66,7 +80,7 @@ async function creerFiltres(){
         const filtre = categories[i];
 
         const boutonFiltrer = document.createElement("button");
-        boutonFiltrer.id = filtre.id;
+        boutonFiltrer.dataset.id = filtre.id;
         boutonFiltrer.innerText= filtre.name;
 
         document.querySelector(".filtres").appendChild(boutonFiltrer);
@@ -74,39 +88,29 @@ async function creerFiltres(){
 
     
 }
-
 async function actionFiltres() {
 
-    const boutonsFiltres = document.querySelectorAll(".filtres button");
+    const boutonsFiltres = document.querySelector(".filtres");
     
-    boutonsFiltres.forEach((button) => {
+    boutonsFiltres.addEventListener("click", async (event) =>{
 
-        button.addEventListener("click", async (event) =>{
+        let id = event.target.dataset.id;
 
-            let id = event.target.id;
-            const worksJSON = window.localStorage.getItem("works");
+        const works = await getProjets();
 
-            if(worksJSON === null){
-                worksJSON = JSON.stringify(await getProjets());
-            }
-            boutonsFiltres.forEach(button => button.classList.remove("clicked"));
-            event.target.classList.toggle("clicked");
+        document.querySelectorAll(".filtres button").forEach(button => button.classList.remove("clicked"));
+        event.target.classList.add("clicked");
 
-            if(id === "tous"){
-                const worksFiltres = JSON.parse(worksJSON);
-                document.querySelector(".gallery").innerHTML = "";
-                genererProjets(worksFiltres);
+        if(id === "tous"){
+            document.querySelector(".gallery").innerHTML = "";
+            genererProjets(works);
 
-            }else{
-                id = parseInt(id);
-                const works= JSON.parse(worksJSON);
-                const worksFiltres = works.filter(p => p.categoryId === id);
-                document.querySelector(".gallery").innerHTML = "";
-                genererProjets(worksFiltres);
-                
-            }
-
-        })
+        }else{
+            id = parseInt(id);
+            const worksFiltres = works.filter(p => p.categoryId === id);
+            document.querySelector(".gallery").innerHTML = "";
+            genererProjets(worksFiltres); 
+        }
     })
 }
 export async function filtres(){
