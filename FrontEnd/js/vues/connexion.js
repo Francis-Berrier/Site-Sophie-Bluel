@@ -1,4 +1,4 @@
-import { formLogin } from "./loginFunctions.js";
+import { connexionControl } from "../controllers/connexionControl.js";
 
 export async function loadConnexion() {
     document.getElementById("page-connexion-container").innerHTML = "";
@@ -8,5 +8,5 @@ export async function loadConnexion() {
     const template = await reponse.text();
     
     document.getElementById("page-connexion-container").innerHTML = template;  
-    formLogin()
+    connexionControl();
 }

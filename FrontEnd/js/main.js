@@ -1,7 +1,7 @@
 
-import { loadPageAccueil } from "./pageAccueil.js";
-import { loadHeader } from "./header.js";
-import { loadFooter } from "./footer.js";
+import { loadPageAccueil } from "./vues/pageAccueil.js";
+import { loadHeader } from "./vues/header.js";
+import { loadFooter } from "./vues/footer.js";
 
 /*Chargement du header et du footer*/
 loadHeader();

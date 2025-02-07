@@ -1,60 +1,8 @@
-import { getProjets, getCategories, miseAJourProjets, chargeProjets } from "./methods.js";
+import { getProjets } from "./projets.js";
+import { requeteDelete, requeteAdd, miseAJourProjets } from "./requetes.js";
+import { chargeProjets } from "./projets.js";
 
-export function gestionModal(){
-    openCloseModal();
-    changePageModal();
-    afficheProjetsModal();
-    afficheCategoriesModal();
-    supprimerProjets();
-    addProjets();
-}
-function changePageModal(){
 
-    document.querySelector("#btn-ajout").addEventListener("click", function() {
-        document.querySelector("#modal-gallery").style.display = "none";
-        document.querySelector("#modal-add").style.display = "flex";
-        document.querySelector("#preview").style.display = "none";
-        document.querySelector(".dropzone-content").style.display = "flex";
-        clearformAdd();
-    });
-    document.querySelector("#retour-gallery").addEventListener("click", function() {
-        document.querySelector("#modal-gallery").style.display = "flex";
-        document.querySelector("#modal-add").style.display = "none";
-        afficheProjetsModal();
-    });
-}
-export function openCloseModal(){
-
-    const btnModifier = document.querySelector("#button");
-    btnModifier.addEventListener("click", function(){
-        let displayModal = document.querySelector("#modal1");
-        displayModal.style.display = "flex";
-
-    });
-    const btnFermer = document.querySelectorAll(".fermer-modal");
-
-    btnFermer.forEach(button => { 
-        button.addEventListener("click", function(){
-            let displayModal = document.querySelector("#modal1");
-            displayModal.style.display = "none";
-            document.querySelector("#modal-gallery").style.display = "flex";
-            document.querySelector("#modal-add").style.display = "none";
-            clearformAdd();
-            chargeProjets();
-        })
-    });
-
-    const overlay = document.querySelector("#modal1");
-    overlay.addEventListener("click", (event) => {
-        if(event.target === overlay){
-        overlay.style.display = "none";
-        document.querySelector("#modal-gallery").style.display = "flex";
-        document.querySelector("#modal-add").style.display = "none";
-        clearformAdd();
-        chargeProjets();
-        }
-    });
-}
 function genererProjetsModal(works) { 
     const projetsElements = document.querySelector('.photo-gallery');
     projetsElements.innerHTML= "";
@@ -63,7 +11,6 @@ function genererProjetsModal(works) {
         const projet = works[i];
 
         const projetElement = document.createElement("figure");
-        //projetElement.id = projet.id;
         const projetImg = document.createElement("img");
         projetImg.src = projet.imageUrl;
         projetImg.alt = projet.title;
@@ -83,37 +30,11 @@ function genererProjetsModal(works) {
         
     }
 }
-async function afficheProjetsModal(){
+export async function afficheProjetsModal(){
     const works= await getProjets();
     genererProjetsModal(works);
 }
-function genererCategoriesModal(categories){
-
-    for(let i=0; i< categories.length; i++){
-
-        const category = categories[i];
-
-        const optionCategorie = document.createElement("option");
-        optionCategorie.value = category.id;
-        optionCategorie.innerText= category.name;
-
-        document.querySelector("#category-form").appendChild(optionCategorie);
-    }
-
-}
-async function afficheCategoriesModal(){
-    const categories= await getCategories();
-    genererCategoriesModal(categories);
-}
-async function requeteDelete(id, token) {
-    const reponse = await fetch(`http://localhost:5678/api/works/${id}`, {
-        method: "DELETE",
-        headers:  { "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`}
-    })
-    return reponse.status;
-}
-async function supprimerProjets() {
+export async function supprimerProjets() {
 
     document.addEventListener("click", async function(event) {
             if(event.target.classList.contains("clic-trash")){
@@ -122,6 +43,7 @@ async function supprimerProjets() {
                 const token= authData.token;
                 const id= event.target.dataset.id;
                 const reponse= await requeteDelete(id, token);
+                console.log(reponse);
 
                 if (reponse === 204){
                     miseAJourProjets();
@@ -139,7 +61,7 @@ async function supprimerProjets() {
             }
         })
 }
-function addProjets() {
+export function addProjets() {
     const imgDropzone = document.querySelector(".img-dropzone");
     const btnFileSelect= document.getElementById("file-select");
     const imgUpload = document.getElementById("image-form");
@@ -257,28 +179,7 @@ async function uploadProjets(file) {
         }
     }     
 }
-async function requeteAdd(auth, file) {
-    console.log(document.getElementById("image-form").files)
-    const token = auth;
-    let category= document.getElementById("category-form").value;
-    let title= document.getElementById("title-form").value;
-    const image = file;
-    //let image= document.getElementById("image-form").files[0];
-    console.log(category);
-    console.log(title);
-    console.log(image);
-    const formData= new FormData();
-    formData.append("image", image);
-    formData.append("title", title);
-    formData.append("category", category);
-    const reponse = await fetch("http://localhost:5678/api/works", {
-        method: "POST",
-        headers: {"Authorization": `Bearer ${token}`},
-        body: formData
-    });
-    return reponse.status;
-}
-function clearformAdd() {
+export function clearformAdd() {
     document.querySelector("#preview").style.display = "none";
     document.querySelector(".dropzone-content").style.display = "flex";
     let image= document.getElementById("image-form");
