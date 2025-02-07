@@ -2,13 +2,13 @@ import { miseAJourCategories } from "./requetes.js";
 
 export async function getCategories() {
     const categoriesJSON = window.localStorage.getItem("categories");
-    let categories
+    let categories = null;
     if (categoriesJSON !== null){
         categories= JSON.parse(categoriesJSON);
     }else{
         categories = await miseAJourCategories();
     }
-    return categories
+    return categories;
 }
 function genererCategoriesModal(categories){
 
@@ -26,5 +26,6 @@ function genererCategoriesModal(categories){
 }
 export async function afficheCategoriesModal(){
     const categories= await getCategories();
+    console.log(categories);
     genererCategoriesModal(categories);
 }
