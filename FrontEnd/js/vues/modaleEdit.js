@@ -1,4 +1,4 @@
-import {gestionModal} from "./modaleMethods.js";
+import { modaleEditControl } from "../controllers/modaleEditControl.js";
 
 export async function loadModaleEdit() {
     document.getElementById("modale-edit-container").innerHTML = "";
@@ -6,5 +6,6 @@ export async function loadModaleEdit() {
     const template = await reponse.text();
     
     document.getElementById("modale-edit-container").innerHTML = template;
-    gestionModal();  
+    
+    modaleEditControl();  
 }

@@ -1,7 +1,7 @@
-import { loadModaleEdit } from "./modaleEdit.js";
-import { loadHeader } from "./header.js";
+import { loadModaleEdit } from "../vues/modaleEdit.js";
+import { loadHeader } from "../vues/header.js";
 
-export function checkEditMode(){
+export function checkEditAccueil(){
 
     const authData = window.sessionStorage.getItem("authData");
     const auth= JSON.parse(authData)
@@ -21,7 +21,7 @@ export function checkEditMode(){
         loadModaleEdit();
 
     }else{
-       
+        document.getElementById("modale-edit-container").innerHTML = "";
         if (filtres && filtres.style.display==="none"){
             filtres.style.display="flex";
         }
