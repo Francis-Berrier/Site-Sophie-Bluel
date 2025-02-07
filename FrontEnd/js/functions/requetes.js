@@ -13,12 +13,29 @@ export async function miseAJourProjets() {
     return works;
 }
 export async function miseAJourCategories() {
+    try {
+        const categoriesFETCH = await fetch('http://localhost:5678/api/categories');
 
-    const categoriesJSON = await fetch('http://localhost:5678/api/categories');
-    const categories = await categoriesJSON.json();
+        // Vérifier si la réponse est bien un JSON
+        const contentType = categoriesFETCH.headers.get("content-type");
+        if (!categoriesFETCH.ok) {
+            throw new Error(`Erreur HTTP: ${categoriesFETCH.status}`);
+        }
+        if (!contentType || !contentType.includes("application/json")) {
+            throw new Error("Réponse non JSON reçue !");
+        }
+    //const categoriesFETCH = await fetch('http://localhost:5678/api/categories');
+    const categories = await categoriesFETCH.json();
+    const categoriesJSON = JSON.stringify(categories);
+
 
     window.localStorage.setItem("categories", categoriesJSON);
     return categories;
+    
+    } catch (error) {
+        console.error("Erreur lors de la récupération des catégories :", error);
+        return []; // Retourne un tableau vide en cas d'erreur
+    }
 }
 export async function requeteDelete(id, token) {
     const reponse = await fetch(`http://localhost:5678/api/works/${id}`, {
