@@ -3,6 +3,7 @@ import { loadPageAccueil } from "../vues/pageAccueil.js";
 import { loadConnexion } from "../vues/connexion.js";
 import { retourPageAccueil } from "./retourPageAccueil.js";
 
+
 export function boutonsLog() {
     let loginLink = document.querySelector("#login-link");
     let logoutLink = document.querySelector("#logout-link");
@@ -24,4 +25,10 @@ export function boutonsLog() {
     ancreContacts.addEventListener("click", function(){
         retourPageAccueil()
     })
+}
+
+export function logOut() {
+    window.sessionStorage.removeItem("authData");
+        loadHeader();
+        loadPageAccueil();
 }

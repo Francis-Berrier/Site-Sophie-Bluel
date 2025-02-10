@@ -1,10 +1,24 @@
 import { loadModaleEdit } from "../vues/modaleEdit.js";
 import { loadHeader } from "../vues/header.js";
+import { loadModaleErreur } from "../vues/modaleErreur.js";
+import { logOut } from "./boutonsLog.js";
 
 export function checkEditAccueil(){
-
+    let auth = null;
     const authData = window.sessionStorage.getItem("authData");
-    const auth= JSON.parse(authData)
+    try{
+        
+        try{
+            if (authData) {
+                auth= JSON.parse(authData);
+            }
+        }catch (error){
+            throw new Error("Problème d'identification, veuillez vous reconnecter")
+        }
+    } catch (error){
+        loadModaleErreur();
+        logOut();   
+    }
     let boutonEdit = document.querySelector("#button");
     let filtres = document.querySelector(".filtres");
     
@@ -32,8 +46,21 @@ export function checkEditAccueil(){
     }
 }
 export function checkEditHeader() {
+    let auth = null;
     const authData = window.sessionStorage.getItem("authData");
-    const auth= JSON.parse(authData)
+    try{
+        try{
+            if (authData) {
+                auth= JSON.parse(authData);
+            }
+        }catch (error){
+            throw new Error("Problème d'identification, veuillez vous reconnecter")
+        }
+    } catch (error){
+        loadModaleErreur();
+        logOut();   
+    }
+
     let banniereEdit = document.querySelector("#banniere-edit");
     let loginLink = document.querySelector("#login-link");
     let logoutLink = document.querySelector("#logout-link");

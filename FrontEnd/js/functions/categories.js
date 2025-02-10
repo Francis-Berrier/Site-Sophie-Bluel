@@ -1,16 +1,31 @@
+import { loadModaleErreur } from "../vues/modaleErreur.js";
+import { logOut } from "./boutonsLog.js";
 import { miseAJourCategories } from "./requetes.js";
 
 export async function getCategories() {
+
     const categoriesJSON = window.localStorage.getItem("categories");
     let categories = null;
-    if (categoriesJSON !== null){
-        categories= JSON.parse(categoriesJSON);
-    }else{
+    try {
+        if (categoriesJSON){
+            categories= JSON.parse(categoriesJSON);
+        }
+    } catch (error) {
+        categories = null;
+    }
+    if (!categories) {
         categories = await miseAJourCategories();
     }
     return categories;
 }
 function genererCategoriesModal(categories){
+    try {
+        if(categories === null){
+            throw new Error("Impossible de charger les catégories, ajout impossible");
+        }
+    } catch (error) {
+        loadModaleErreur(error);
+    }
 
     for(let i=0; i< categories.length; i++){
 
@@ -26,6 +41,5 @@ function genererCategoriesModal(categories){
 }
 export async function afficheCategoriesModal(){
     const categories= await getCategories();
-    console.log(categories);
     genererCategoriesModal(categories);
 }
