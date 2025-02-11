@@ -3,7 +3,7 @@ import { checkEditAccueil} from "./checkEditMode.js";
 import { loadHeader } from "../vues/header.js";
 import { loadModaleErreur } from "../vues/modaleErreur.js";
 import { loadConnexion } from "../vues/connexion.js";
-import { clearformAdd } from "./modaleProjets.js";
+import { clearformAdd, clearDropZone } from "./modaleProjets.js";
 
 export async function miseAJourProjets() {
     try {
@@ -84,7 +84,6 @@ export async function requeteAdd(auth, file) {
         if(!category || !title) {
             throw new Error("Formulaire d'ajout incomplet")
         }
-        console.log(image);
         const formData= new FormData();
         formData.append("image", image);
         formData.append("title", title);
@@ -103,6 +102,7 @@ export async function requeteAdd(auth, file) {
 
     }catch (error){
         clearformAdd();
+        clearDropZone();
         loadModaleErreur(error);
         return null;
     }

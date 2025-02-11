@@ -58,7 +58,6 @@
     box-sizing: border-box;
 }
 .trash{
-    cursor: pointer;
     all: unset;
     display: flex;
     align-items: center;
@@ -66,10 +65,18 @@
     position: absolute;
     top: 6px;
     right: 5px;
-    width: 17px;
-    height: 17px;
+    width: 18px;
+    height: 18px;
     border-radius: 2px;
     background-color: black;
+}
+.clic-trash {
+    cursor: pointer;
+}
+.fa-solid.fa-trash-can {
+    font-size: 14px;
+    font-weight: 300;
+    color: white;
 }
 .photo-gallery img {
     max-width: 100%;
@@ -84,6 +91,7 @@
 
 }
 .btn-modal {
+    cursor: pointer;
     all:unset;
     font-family: 'Syne';
     font-size: (1.4vh, 14px);
@@ -180,6 +188,7 @@
 }
 #btn-valider:disabled{
     background-color: #A7A7A7;
+    cursor: not-allowed;
 }
 
 #retour-gallery {
@@ -196,4 +205,23 @@
     margin-left:auto;
     padding: 30px 30px 0 0;
     
+}
+
+.fa-solid {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.fa-arrow-left {
+    font-size: 24px;
+    font-weight: 800;
+}
+#btn-ajout {
+    cursor: pointer;
+}
+#btn-valider {
+    cursor: pointer;
+}
+#file-select {
+    cursor: pointer;
 }

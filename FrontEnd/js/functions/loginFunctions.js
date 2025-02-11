@@ -27,7 +27,6 @@ export async function formLogin() {
         const password = htmlSpecialChars(event.target.password.value);
         event.target.email.value = null;
         event.target.password.value = null;
-        console.log(email, password);
         requestLogin(email, password);
     })
 }

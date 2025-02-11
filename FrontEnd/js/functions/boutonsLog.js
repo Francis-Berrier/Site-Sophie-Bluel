@@ -11,7 +11,6 @@ export function boutonsLog() {
     let ancreContacts = document.querySelector("#ancre-contacts");
 
     loginLink.addEventListener("click", function() {
-        document.getElementById("page-accueil-container").style.display= "none";
         loadConnexion();
     })
     logoutLink.addEventListener("click", function(){
