@@ -1,5 +1,4 @@
 import { loadModaleErreur } from "../vues/modaleErreur.js";
-import { logOut } from "./boutonsLog.js";
 import { miseAJourCategories } from "./requetes.js";
 
 export async function getCategories() {

@@ -4,30 +4,15 @@ import { loadModaleErreur } from "../vues/modaleErreur.js";
 import { logOut } from "./boutonsLog.js";
 
 export function checkEditAccueil(){
-    let auth = null;
-    const authData = window.sessionStorage.getItem("authData");
-    try{
-        
-        try{
-            if (authData) {
-                auth= JSON.parse(authData);
-            }
-        }catch (error){
-            throw new Error("Problème d'identification, veuillez vous reconnecter")
-        }
-    } catch (error){
-        loadModaleErreur();
-        logOut();   
-    }
+
+    let auth = verifAuthorisation();
     let boutonEdit = document.querySelector("#button");
     let filtres = document.querySelector(".filtres");
     
     if(auth !== null) {
-        
         if (filtres && filtres.style.display==="flex"){
             filtres.style.display="none";
         }
-       
         if (boutonEdit && boutonEdit.style.display==="none"){
             boutonEdit.style.display="flex";
         }
@@ -39,28 +24,14 @@ export function checkEditAccueil(){
         if (filtres && filtres.style.display==="none"){
             filtres.style.display="flex";
         }
-       
         if (boutonEdit && boutonEdit.style.display==="flex"){
             boutonEdit.style.display="none";
         }
     }
 }
 export function checkEditHeader() {
-    let auth = null;
-    const authData = window.sessionStorage.getItem("authData");
-    try{
-        try{
-            if (authData) {
-                auth= JSON.parse(authData);
-            }
-        }catch (error){
-            throw new Error("Problème d'identification, veuillez vous reconnecter")
-        }
-    } catch (error){
-        loadModaleErreur();
-        logOut();   
-    }
 
+    let auth = verifAuthorisation();
     let banniereEdit = document.querySelector("#banniere-edit");
     let loginLink = document.querySelector("#login-link");
     let logoutLink = document.querySelector("#logout-link");
@@ -87,4 +58,22 @@ export function checkEditHeader() {
             banniereEdit.style.display="none";
         }
     }
+}
+function verifAuthorisation() {
+
+    let auth = null;
+    const authData = window.sessionStorage.getItem("authData");
+    try{
+        try{
+            if (authData) {
+                auth= JSON.parse(authData);
+            }
+        }catch (error){
+            throw new Error("Problème d'identification, veuillez vous reconnecter")
+        }
+    } catch (error){
+        loadModaleErreur();
+        logOut();   
+    }
+    return auth;
 }

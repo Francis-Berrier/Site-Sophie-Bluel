@@ -2,7 +2,6 @@ import { getProjets } from "./projets.js";
 import { requeteDelete, requeteAdd, miseAJourProjets } from "./requetes.js";
 import { chargeProjets } from "./projets.js";
 import { loadModaleErreur } from "../vues/modaleErreur.js";
-import { loadImgDropzone } from "../vues/imgDropzone.js";
 
 
 function genererProjetsModal(works) {
@@ -26,7 +25,6 @@ function genererProjetsModal(works) {
             const btnTrash = document.createElement("button");
             btnTrash.dataset.id = projet.id;
             btnTrash.classList.add("trash");
-            //btnTrash.classList.add("clic-trash");
             btnTrash.appendChild(iconTrash);
 
             projetsElements.appendChild(projetElement);
@@ -110,30 +108,31 @@ export function addProjets() {
         traitementFile(file);
 
     })
-
-    function traitementFile(file) {
+    async function traitementFile(file) {
 
         const maxSize= 4 * 1024 *  1024;
         const validTypes= ["image/jpeg", "image/png"];
 
         if(!file || !validTypes.includes(file.type) || file.size > maxSize) {
             clearformAdd();
-            loadImgDropzone();
+            clearDropZone();
             document.querySelector(".message-img-type").style.display="none";
-            document.querySelector(".erreur-img-type").style.display="block";  
+            document.querySelector(".erreur-img-type").style.display="block";
+            return;
         }   
-
+        
         verifFile = true;
-        afficherApercu(file);
+        await afficherApercu(file);
+        document.querySelector(".message-img-type").style.display="block";
+        document.querySelector(".erreur-img-type").style.display="none";
         verifForm();
         titreForm.addEventListener("input", () =>{verifForm()});
         categorieForm.addEventListener("change", () =>{verifForm()});
 
         btnValider.addEventListener("click", async function(){
-          uploadProjets(file);
+          await uploadProjets(file);
         });
     }
-
     function verifForm() {
     
         const verifTitre = titreForm.value.trim() !== "";
@@ -169,7 +168,7 @@ async function uploadProjets(file) {
         }
         clearformAdd();
         clearDropZone();
-        miseAJourProjets();
+        await miseAJourProjets();
         chargeProjets();
         afficheProjetsModal();
         

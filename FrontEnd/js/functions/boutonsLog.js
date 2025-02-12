@@ -11,12 +11,15 @@ export function boutonsLog() {
     let ancreContacts = document.querySelector("#ancre-contacts");
 
     loginLink.addEventListener("click", function() {
+        if(!loginLink.classList.contains("checked")) {
+        loginLink.innerHTML="";
+        loginLink.innerHTML="<span>login</span>";
+        loginLink.classList.add("checked");
         loadConnexion();
+        }
     })
     logoutLink.addEventListener("click", function(){
-        window.sessionStorage.removeItem("authData");
-        loadHeader();
-        loadPageAccueil();
+        logOut();
     })
     ancreProjets.addEventListener("click", function(){
         retourPageAccueil();

@@ -6,6 +6,7 @@ import { loadConnexion } from "../vues/connexion.js";
 import { clearformAdd, clearDropZone } from "./modaleProjets.js";
 
 export async function miseAJourProjets() {
+    window.localStorage.removeItem("works");
     try {
         const reponse = await fetch('http://localhost:5678/api/works');
 
@@ -29,6 +30,7 @@ export async function miseAJourProjets() {
     }
 }
 export async function miseAJourCategories() {
+    window.localStorage.removeItem("categories");
     try {
         const reponse = await fetch('http://localhost:5678/api/categories');
 
