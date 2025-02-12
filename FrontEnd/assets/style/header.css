@@ -1,5 +1,6 @@
 header {
-	margin: 0;
+	margin-left: 10.4vw;
+	margin-right: 10.4vw;
 	display: flex;
 	flex-direction: column;
 	
@@ -9,6 +10,13 @@ header {
 	justify-content: space-between;
 	margin: 50px 0;
 	background-color: #FFFEF8;
+}
+#header-content i{
+	font-size: 22px;
+}
+
+.checked span {
+	font-weight: bold;
 }
 #banniere-edit {
 	width: 100%;
@@ -25,13 +33,14 @@ header {
 	margin:0;
 	padding: 20px 10px;
 }
-#banniere-edit span {
+#banniere-edit i {
 	font-size: 16px;
 	margin: 0;
 	padding: 20px 0;
 }
 nav ul {
 	display: flex;
+	column-gap: 2.5vw;
 	align-items: center;
 	list-style-type: none;
 }
@@ -39,7 +48,6 @@ nav ul {
 	display: none;
 }
 nav li {
-	padding: 0 10px;
 	font-size: 1.2em;
 }
 
@@ -49,6 +57,6 @@ nav a {
 	color: inherit;
 }
 
-li:hover {
+nav a:hover {
 	color: #B1663C;
 }

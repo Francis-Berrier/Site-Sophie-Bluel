@@ -1,9 +1,15 @@
 import { getCategories } from "./categories.js";
 import { getProjets, genererProjets } from "./projets.js";
+import { loadModaleErreur } from "../vues/modaleErreur.js";
 
 async function creerFiltres(){
-
+    try {
     const categories = await getCategories();
+        
+        if(categories === null){
+            throw new Error("Impossible de charger les catégories");
+        }
+  
 
     const boutonTous = document.createElement("button");
     boutonTous.dataset.id = "tous";
@@ -20,8 +26,9 @@ async function creerFiltres(){
 
         document.querySelector(".filtres").appendChild(boutonFiltrer);
     }
-
-    
+    } catch (error) {
+        console.log(error);
+    }
 }
 async function actionFiltres() {
 

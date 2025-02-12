@@ -3,6 +3,7 @@ import { loadPageAccueil } from "../vues/pageAccueil.js";
 import { loadConnexion } from "../vues/connexion.js";
 import { retourPageAccueil } from "./retourPageAccueil.js";
 
+
 export function boutonsLog() {
     let loginLink = document.querySelector("#login-link");
     let logoutLink = document.querySelector("#logout-link");
@@ -10,13 +11,15 @@ export function boutonsLog() {
     let ancreContacts = document.querySelector("#ancre-contacts");
 
     loginLink.addEventListener("click", function() {
-        document.getElementById("page-accueil-container").style.display= "none";
+        if(!loginLink.classList.contains("checked")) {
+        loginLink.innerHTML="";
+        loginLink.innerHTML="<span>login</span>";
+        loginLink.classList.add("checked");
         loadConnexion();
+        }
     })
     logoutLink.addEventListener("click", function(){
-        window.sessionStorage.removeItem("authData");
-        loadHeader();
-        loadPageAccueil();
+        logOut();
     })
     ancreProjets.addEventListener("click", function(){
         retourPageAccueil();
@@ -24,4 +27,10 @@ export function boutonsLog() {
     ancreContacts.addEventListener("click", function(){
         retourPageAccueil()
     })
+}
+
+export function logOut() {
+    window.sessionStorage.removeItem("authData");
+        loadHeader();
+        loadPageAccueil();
 }
