@@ -9,6 +9,7 @@ export function boutonsLog() {
     let logoutLink = document.querySelector("#logout-link");
     let ancreProjets = document.querySelector("#ancre-projets");
     let ancreContacts = document.querySelector("#ancre-contacts");
+    let headerLogo = document.querySelector("#header-logo");
 
     loginLink.addEventListener("click", function() {
         if(!loginLink.classList.contains("checked")) {
@@ -25,6 +26,9 @@ export function boutonsLog() {
         retourPageAccueil();
     })
     ancreContacts.addEventListener("click", function(){
+        retourPageAccueil()
+    })
+    headerLogo.addEventListener("click", function(){
         retourPageAccueil()
     })
 }

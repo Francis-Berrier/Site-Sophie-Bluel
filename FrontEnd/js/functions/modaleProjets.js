@@ -2,6 +2,7 @@ import { getProjets } from "./projets.js";
 import { requeteDelete, requeteAdd, miseAJourProjets } from "./requetes.js";
 import { chargeProjets } from "./projets.js";
 import { loadModaleErreur } from "../vues/modaleErreur.js";
+import { loadModaleSucces } from "../vues/modaleSucces.js";
 
 
 function genererProjetsModal(works) {
@@ -54,6 +55,8 @@ export async function supprimerProjets() {
                 }
                 const id= event.target.dataset.id;
                 await requeteDelete(id, token);
+                const message = 'Projet supprimé avec succès';
+                loadModaleSucces(message);
                 await miseAJourProjets();
                 chargeProjets();
                 afficheProjetsModal();
@@ -113,25 +116,30 @@ export function addProjets() {
         const maxSize= 4 * 1024 *  1024;
         const validTypes= ["image/jpeg", "image/png"];
 
-        if(!file || !validTypes.includes(file.type) || file.size > maxSize) {
+        try { 
+            if(!file || !validTypes.includes(file.type) || file.size > maxSize) {
+            throw new Error (`Le format d'image ne correspond pas`)
+            
+            }   
+            
+            verifFile = true;
+            await afficherApercu(file);
+            document.querySelector(".message-img-type").style.display="block";
+            document.querySelector(".erreur-img-type").style.display="none";
+            verifForm();
+            titreForm.addEventListener("input", () =>{verifForm()});
+            categorieForm.addEventListener("change", () =>{verifForm()});
+
+            btnValider.addEventListener("click", async function(){
+            await uploadProjets(file);
+            });
+        } catch (error) {
+            loadModaleErreur(error);
             clearformAdd();
             clearDropZone();
-            document.querySelector(".message-img-type").style.display="none";
-            document.querySelector(".erreur-img-type").style.display="block";
+            file= null;
             return;
-        }   
-        
-        verifFile = true;
-        await afficherApercu(file);
-        document.querySelector(".message-img-type").style.display="block";
-        document.querySelector(".erreur-img-type").style.display="none";
-        verifForm();
-        titreForm.addEventListener("input", () =>{verifForm()});
-        categorieForm.addEventListener("change", () =>{verifForm()});
-
-        btnValider.addEventListener("click", async function(){
-          await uploadProjets(file);
-        });
+        }
     }
     function verifForm() {
     
@@ -166,12 +174,13 @@ async function uploadProjets(file) {
         if (!reponse.ok){
             throw new Error(`Le projet ne peut pas être créé (Erreur: ${reponse})`);   
         }
+        const message = 'Nouveau projet créé';
+        loadModaleSucces(message);
         clearformAdd();
         clearDropZone();
         await miseAJourProjets();
-        chargeProjets();
         afficheProjetsModal();
-        
+        chargeProjets();
 
     }catch (error){
         loadModaleErreur(error);
