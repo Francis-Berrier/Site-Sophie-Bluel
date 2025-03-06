@@ -24,9 +24,9 @@ header {
 	font-size: 22px;
 }
 
-/*#header-logo {
+#header-logo {
 	cursor: pointer;
-}*/
+}
 
 .checked span {
 	font-weight: bold;
