@@ -1,19 +1,32 @@
+#header-container {
+	/*position: sticky;*/
+	top: 0;
+	width: 100%;
+	background-color: #FFFEF8;
+	z-index: 995;
+}
+
 header {
-	margin-left: 10.4vw;
-	margin-right: 10.4vw;
+	padding-left: 10.4vw;
+	padding-right: 10.4vw;
 	display: flex;
 	flex-direction: column;
-	
+	z-index: 995;
 }
 #header-content {
 	display: flex;
 	justify-content: space-between;
 	margin: 50px 0;
 	background-color: #FFFEF8;
+	box-sizing: border-box;
 }
 #header-content i{
 	font-size: 22px;
 }
+
+/*#header-logo {
+	cursor: pointer;
+}*/
 
 .checked span {
 	font-weight: bold;
